@@ -4,11 +4,11 @@ import { createOrUpdateUser, deleteUser } from "@/lib/actions/user";
 
 export async function POST(req) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  const SIGNING_SECRET = process.env.SIGNING_SECRET;
 
-  if (!WEBHOOK_SECRET) {
+  if (!SIGNING_SECRET) {
     throw new Error(
-      'Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local'
+      'Please add SIGNING_SECRET from Clerk Dashboard to .env or .env.local'
     );
   }
 
