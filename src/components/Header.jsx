@@ -25,7 +25,7 @@ export default function Header() {
       <div className='flex items-center gap-4'>
      
                 <Link href={'/'} className='flex gap-1 items-center'>
-            <p className="font-bold "><span className=" sm:text-lg text-xl">Movies</span> <span className="text-cyan-800 text-2xl sm:text-xl">Watcher</span></p>
+            <p className="font-bold "><span className=" sm:text-lg text-xl">Movies</span> <span className="text-cyan-700 text-2xl sm:text-xl">Watcher</span></p>
         </Link>
       </div>
     </div>
