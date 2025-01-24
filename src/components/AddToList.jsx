@@ -34,7 +34,7 @@ export default function AddToList({
       return;
     }
     try {
-      const res = await fetch('/api/user/fav', {
+      const res = await fetch('/api/user/list', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ export default function MyList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/user/getFav', {
+        const res = await fetch('/api/user/getList', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
