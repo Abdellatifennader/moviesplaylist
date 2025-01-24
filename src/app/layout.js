@@ -1,8 +1,8 @@
 import "./globals.css";
 import Header from "@/components/Header";
+import Navbar from "@/components/Navbar";
+import SearchArea from "@/components/SearchArea";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -15,16 +15,13 @@ export default function RootLayout({ children }) {
   
     <ClerkProvider>
     <html lang="en" suppressHydrationWarning>
-      <body>
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+      <body className="bg-black text-white">
+      
         <Header/>
+        <Navbar/>
+        <SearchArea/>
         {children}
-        </ThemeProvider>
+        
       </body>
     
     </html>

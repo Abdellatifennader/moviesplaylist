@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { ModeToggle } from "./ToggleButton";
 
 export default function Header() {
   return (
@@ -16,7 +15,7 @@ export default function Header() {
           <Link href={'/'}>Home</Link>
         </li>
         <li className='hidden sm:block'>
-          <Link href={'/favorites'}>Favorites</Link>
+          <Link href={'/moviesList'}>My List</Link>
         </li>
         <li className='hidden sm:block'>
           <Link href={'/about'}>About</Link>
@@ -24,9 +23,9 @@ export default function Header() {
       
       </ul>
       <div className='flex items-center gap-4'>
-       <ModeToggle/>
+     
                 <Link href={'/'} className='flex gap-1 items-center'>
-               MoviesPlaylist
+            <p className="font-bold "><span className=" sm:text-lg text-xl">Movies</span> <span className="text-cyan-800 text-2xl sm:text-xl">Watcher</span></p>
         </Link>
       </div>
     </div>
