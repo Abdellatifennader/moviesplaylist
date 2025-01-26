@@ -1,4 +1,5 @@
 "use client";
+import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -18,15 +19,15 @@ export default function SearchArea() {
       <input
         type='text'
         placeholder='Search keywords...'
-        className='w-full h-14 rounded-md placeholder-gray-200 outline-none bg-transparent flex-1'
+        className='w-full h-14 rounded-md placeholder-gray-200   bg-transparent flex-1'
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
       <button
-        className='text-gray-200 '
+        className='text-gray-200 cursor-pointer outline-none hover:text-gray-400 '
         disabled={search === ''}
       >
-        Search
+        <SearchIcon/>
       </button>
     </form>
   );

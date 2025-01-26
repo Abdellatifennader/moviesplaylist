@@ -1,4 +1,5 @@
 import Results from "@/components/Results";
+import SearchArea from "@/components/SearchArea";
 
 const API_KEY = process.env.API_KEY;
 
@@ -11,9 +12,13 @@ const API_KEY = process.env.API_KEY;
   }
   const result = data.results;
   return (
-
+    <>
+    
       <Results results={result} />
     
+    </>
+
+   
   )
 }
 
