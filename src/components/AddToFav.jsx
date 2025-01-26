@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function AddToList({
+export default function AddToFav({
   movieId,
   title,
   image,
@@ -34,7 +34,7 @@ export default function AddToList({
       return;
     }
     try {
-      const res = await fetch('/api/user/list', {
+      const res = await fetch('/api/user/fav', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export default function AddToList({
       if (res.ok) {
         setIsFav(!isFav);
       } else {
-        console.log('Failed to update favorites');
+        console.error('Failed to update favorites');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -65,14 +65,14 @@ export default function AddToList({
     <div>
       <button
         onClick={handleFavClick}
-        className={`p-2 rounded  ${isFav ? 'bg-cyan-900' : 'bg-cyan-700'}`}
+        className={`p-2 rounded  ${isFav ? 'bg-red-300 dark:bg-red-600' : 'bg-gray-300 dark:bg-gray-600'}`}
         disabled={isLoading}
       >
         {isLoading
           ? 'Loading...'
           : isFav
-          ? 'Remove from List'
-          : 'Add to List'}
+          ? 'Remove from Favorites'
+          : 'Add to Favorites'}
       </button>
     </div>
   );

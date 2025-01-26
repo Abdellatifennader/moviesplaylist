@@ -3,13 +3,13 @@ import Results from "@/components/Results";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
-export default function MyList() {
+export default function Favorites() {
   const [results, setResults] = useState(null);
   const { isSignedIn, user, isLoaded } = useUser();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/user/getList', {
+        const res = await fetch('/api/user/getFav', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ export default function Header() {
           <Link href={'/'}>Home</Link>
         </li>
         <li className='hidden sm:block'>
-          <Link href={'/moviesList'}>My List</Link>
+          <Link href={'/favorites'}>My List</Link>
         </li>
         <li className='hidden sm:block'>
           <Link href={'/about'}>About</Link>

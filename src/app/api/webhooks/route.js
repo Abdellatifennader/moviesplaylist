@@ -1,40 +1,40 @@
+import { clerkClient } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { createOrUpdateUser, deleteUser } from "@/lib/actions/user";
 
 export async function POST(req) {
-  // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
 
   if (!SIGNING_SECRET) {
     throw new Error(
-      'Please add SIGNING_SECRET from Clerk Dashboard to .env or .env.local'
+      'Error: Please add SIGNING_SECRET from Clerk Dashboard to .env or .env.local'
     );
   }
 
-  // Get the headers
-  const headerPayload = headers();
+  // Create new Svix instance with secret
+  const wh = new Webhook(SIGNING_SECRET);
+
+  // Get headers
+  const headerPayload = await headers();
   const svix_id = headerPayload.get('svix-id');
   const svix_timestamp = headerPayload.get('svix-timestamp');
   const svix_signature = headerPayload.get('svix-signature');
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response('Error occured -- no svix headers', {
+    return new Response('Error: Missing Svix headers', {
       status: 400,
     });
   }
 
-  // Get the body
+  // Get body
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-  // Create a new Svix instance with your secret.
-  const wh = new Webhook(SIGNING_SECRET);
-
   let evt;
 
-  // Verify the payload with the headers
+  // Verify payload with headers
   try {
     evt = wh.verify(body, {
       'svix-id': svix_id,
@@ -42,55 +42,57 @@ export async function POST(req) {
       'svix-signature': svix_signature,
     });
   } catch (err) {
-    console.error('Error verifying webhook:', err);
-    return new Response('Error occured', {
+    console.error('Error: Could not verify webhook:', err);
+    return new Response('Error: Verification error', {
       status: 400,
     });
   }
 
-  // Do something with the payload
-  // For this guide, you simply log the payload to the console
+  // Do something with payload
+  // For this guide, log payload to console
   const { id } = evt?.data;
   const eventType = evt?.type;
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log('Webhook body:', body);
 
   if (eventType === 'user.created' || eventType === 'user.updated') {
-    const { id, first_name, last_name, image_url, email_addresses, username } =
-      evt?.data;
+    const { first_name, last_name, image_url, email_addresses } = evt?.data;
     try {
-      await createOrUpdateUser(
+      const user = await createOrUpdateUser(
         id,
         first_name,
         last_name,
         image_url,
-        email_addresses,
-        username
+        email_addresses
       );
-      return new Response('User is created or updated', {
-        status: 200,
-      });
+      if (user && eventType === 'user.created') {
+        try {
+          const client = await clerkClient();
+          await client.users.updateUserMetadata(id, {
+            publicMetadata: {
+              userMongoId: user._id,
+            },
+          });
+        } catch (error) {
+          console.log('Error: Could not update user metadata:', error);
+        }
+      }
     } catch (error) {
-      console.log('Error creating or updating user:', error);
-      return new Response('Error occured', {
-        status: 400,
-      });
-    }
-  }
-  if (eventType === 'user.deleted') {
-    const { id } = evt?.data;
-    try {
-      await deleteUser(id);
-      return new Response('User is deleted', {
-        status: 200,
-      });
-    } catch (error) {
-      console.log('Error deleting user:', error);
-      return new Response('Error occured', {
+      console.log('Error: Could not create or update user:', error);
+      return new Response('Error: Could not create or update user', {
         status: 400,
       });
     }
   }
 
-  return new Response('', { status: 200 });
+  if (eventType === 'user.deleted') {
+    try {
+      await deleteUser(id);
+    } catch (error) {
+      console.log('Error: Could not delete user:', error);
+      return new Response('Error: Could not delete user', {
+        status: 400,
+      });
+    }
+  }
+
+  return new Response('Webhook received', { status: 200 });
 }

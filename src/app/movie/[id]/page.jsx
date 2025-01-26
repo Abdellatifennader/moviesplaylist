@@ -1,4 +1,4 @@
-import AddToList from "@/components/AddToList";
+import AddToFav from "@/components/AddToFav";
 import Link from "next/link";
 
 export default async function MoviePage({ params }) {
@@ -16,7 +16,7 @@ export default async function MoviePage({ params }) {
         </h1>
         {/* return home */}
         <p>
-          <Link href='/' className='hover:text-cyan-700'>
+          <Link href='/' className='hover:text-amber-600'>
             Go Home
           </Link>
         </p>
@@ -46,7 +46,7 @@ export default async function MoviePage({ params }) {
             <span className='font-semibold mr-1'>Rating:</span>
             {movie.vote_count}
           </p>
-          <AddToList
+          <AddToFav
             movieId={movieId}
             title={movie.title || movie.name}
             image={movie.backdrop_path || movie.poster_path}
