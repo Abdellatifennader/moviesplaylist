@@ -18,7 +18,7 @@ export const PUT = async (req) => {
       status: 200,
     });
   } catch (error) {
-    console.log('Error fetching user favorites:', error);
-    return new Response('Error fetching user favorites', { status: 500 });
+    console.log('Error fetching user List:', error);
+    return new Response('Error fetching user list', { status: 500 });
   }
 };

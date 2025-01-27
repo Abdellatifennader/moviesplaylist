@@ -65,14 +65,14 @@ export default function AddToFav({
     <div>
       <button
         onClick={handleFavClick}
-        className={`p-2 rounded  ${isFav ? 'bg-red-300 dark:bg-red-600' : 'bg-gray-300 dark:bg-gray-600'}`}
+        className={`p-2 rounded  ${isFav ? 'bg-cyan-800 ' : ' bg-cyan-600'}`}
         disabled={isLoading}
       >
         {isLoading
           ? 'Loading...'
           : isFav
-          ? 'Remove from Favorites'
-          : 'Add to Favorites'}
+          ? 'Remove'
+          : 'Add to List'}
       </button>
     </div>
   );
